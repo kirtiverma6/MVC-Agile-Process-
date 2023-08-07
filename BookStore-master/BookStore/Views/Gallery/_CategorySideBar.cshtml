@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Category>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a asp-controller="Gallery" asp-action="Index" asp-route-c="@item.Name"><span>(3)</span>@item.Name</a>
+    </li>
+}

@@ -1,0 +1,10 @@
+﻿@model IOrderedEnumerable<Category>
+
+@foreach (var item in Model)
+{
+    <li>
+        <a asp-controller="Gallery" asp-action="Index" asp-route-c="@item.Name">@item.Name</a>
+    </li>
+}
+<li class="divider"></li>
+<li><a href="~/Gallery">All Books</a></li>

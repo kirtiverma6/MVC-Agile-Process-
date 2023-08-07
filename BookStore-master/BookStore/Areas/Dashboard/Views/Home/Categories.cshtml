@@ -1,0 +1,147 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Books";
+    //var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+    //string objJson = serializer.Serialize(Model);
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="tile">
+            <h3 class="tile-title">Categories</h3>
+            <table class="table" id="categoryData">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="tile">
+            <h3 class="tile-title">Add Category</h3>
+            <div class="tile-body">
+                <form id="form1">
+                    <input type="hidden" asp-for="Id" value="0" />
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <input class="form-control" asp-for="Name" type="text" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <textarea class="form-control" asp-for="Description" rows="4" placeholder="Enter your address"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="tile-footer">
+                <button class="btn btn-primary" type="button" onclick="submitForm('#form1')"><i class="fa fa-fw fa-lg fa-check-circle"></i>Add</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"><i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+            </div>
+        </div>
+    </div>
+    <div class="clearix"></div>
+</div>
+
+@section scripts{
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="~/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/js/plugins/bootstrap-notify.min.js"></script>
+    <script type="text/javascript" src="~/js/plugins/sweetalert.min.js"></script>
+    @*<script type="text/javascript">$('#categoryData').DataTable();</script>*@
+    <script type="text/javascript">
+        var dataTable;
+        $(document).ready(function () {
+            dataTable = $('#categoryData').DataTable({
+                ajax: {
+                    url: "/Dashboard/Category/GetData",
+                    type: "Get",
+                    contentType: "application/Json",
+                    dataType: "Json"
+                },
+                columns: [
+                    { data: "id" },
+                    { data: "name" },
+                    { data: "description" },
+                    {
+                        data: "id",
+                        "render": function (data) {
+                            return "<a href='#' class='btn btn-danger icon-btn' onclick='deleteForm(" + data + ")'><i class='fa fa-trash'></i></a>";
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                language: {
+                    infoempty: "No records found!",
+                    emptyTable: "No Data Found! Please Click <b>Add New</b> to add.",
+                },
+            });
+        });
+
+        //For Refresh DataTable while closing Popup Dialog
+        function submitForm(form1) {
+            var obj = $(form1).serialize();
+
+            $.ajax({
+                type: "post",
+                url: "/Dashboard/Category/_AddOrEdit",
+                data: obj,
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                success: function (data) {
+                    if (data.success) {
+                        dataTable.ajax.reload();
+                        //alert(data.message);
+                        $.notify(data.message, {
+                            globalPosition: "top center",
+                            className: "success",
+                        });
+                    } else {
+                        alert("sorry");
+                    }
+                }
+            });
+        }
+
+        //For Delete
+        function deleteForm(id) {
+            if (confirm('Are you sure to Delete this data?')) {
+                $.ajax({
+                    type: "post",
+                    url: "/Dashboard/Category/Delete/",
+                    data: { 'id': id },
+                    success: function (data) {
+                        if (data.success) {
+                            dataTable.ajax.reload();
+                            //alert(data.message);
+                            $.notify({
+                                title: "Notify: ",
+                                message: data.message,
+                                icon: "fa fa-check"
+                            }, {
+                                type: "info"
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        if (document.location.hostname == 'pratikborsadiya.in') {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-72504830-1', 'auto');
+            ga('send', 'pageview');
+        }
+    </script>
+}

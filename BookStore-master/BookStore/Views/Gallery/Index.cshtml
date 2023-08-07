@@ -1,0 +1,171 @@
+﻿@model GalleryViewModel
+@{
+    ViewData["Title"] = "GalleryN";
+    Layout = "_LayoutN";
+}
+
+<!-- Start Bradcaump area -->
+<div class="ht__bradcaump__area bg-image--6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bradcaump__inner text-center">
+                    <h2 class="bradcaump-title">@ViewData["Title"]</h2>
+                    <nav class="bradcaump-content">
+                        <a class="breadcrumb_item" href="index.html">Home</a>
+                        <span class="brd-separetor">/</span>
+                        <span class="breadcrumb_item active">@ViewData["Title"]</span>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Bradcaump area -->
+<!-- Start Shop Page -->
+<div class="page-shop-sidebar left--sidebar bg--white section-padding--lg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-12 order-2 order-lg-1 md-mt-40 sm-mt-40">
+                <div class="">
+                    <aside class="wedget__categories pro--search">
+                        <div class="content-shopby">
+                            <div class="search-box">
+                                <form asp-controller="Gallery" asp-action="Index" method="post">
+                                    <input type="text" id="src_id" name="src" placeholder="Search Here ... ..."/>
+                                    <a href="#" onclick="SearchBook()"><i class="fa fa-search"></i></a>
+                                </form>                                
+                            </div>
+                        </div>
+                    </aside>
+                    <aside class="wedget__categories poroduct--cat">
+                        <h3 class="wedget__title">Product Categories</h3>
+                        <ul>
+                            <li><a asp-action="Index">All Books</a></li>
+                            @await Html.PartialAsync("_CategorySideBar", Model.Categories)
+                        </ul>
+                    </aside>
+                    <aside class="wedget__categories pro--range">
+                        <h3 class="wedget__title">Filter by price</h3>
+                        <div class="content-shopby">
+                            <div class="price_filter s-filter clear">
+                                <form action="#" method="GET">
+                                    <div id="slider-range"></div>
+                                    <div class="slider__range--output">
+                                        <div class="price__output--wrap">
+                                            <div class="price--output">
+                                                <span>Price :</span><input type="text" id="amount" readonly="">
+                                            </div>
+                                            <div class="price--filter">
+                                                <a href="#" onclick="FilterBook()">Filter</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+            <!--Product Grid View Area-->
+            <div class="col-lg-9 col-12 order-1 order-lg-2">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="shop__list__wrapper d-flex flex-wrap flex-md-nowrap justify-content-between">
+                            <div class="shop__list nav justify-content-center" role="tablist">
+                                <a class="nav-item nav-link active" data-toggle="tab" href="#nav-grid" role="tab"><i class="fa fa-th"></i></a>
+                                <a class="nav-item nav-link" data-toggle="tab" href="#nav-list" role="tab"><i class="fa fa-list"></i></a>
+                            </div>
+                            <p>Showing @Model.currentPage of @Model.totalPages results</p>
+                            <div class="orderby__wrapper">
+                                <span>Sort By</span>
+                                <select class="shot__byselect">
+                                    <option>Default sorting</option>
+                                    <option>HeadPhone</option>
+                                    <option>Furniture</option>
+                                    <option>Jewellery</option>
+                                    <option>Handmade</option>
+                                    <option>Kids</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*Product View Area*@
+                <div class="tab__container">
+                    <div class="shop-grid tab-pane fade show active" id="nav-grid" role="tabpanel">
+                        <div class="row">
+                            @await Html.PartialAsync("_BookGallery",Model.Books)
+                        </div>
+                        @*<ul class="wn__pagination" id="paging">
+                            <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                        </ul>*@
+                        <paging current-page="Model.currentPage" 
+                                total-page="Model.totalPages" 
+                                filter-Category="@Model.currentCategory" 
+                                filter-Price= "@ViewBag.filter"
+                                link="Gallery"></paging>
+                    </div>
+                    <div class="shop-grid tab-pane fade" id="nav-list" role="tabpanel">
+                        <div class="list__view__wrapper">
+                            @foreach (var item in Model.Books)
+                            {
+                                <!-- Start Single Product -->
+                                <div class="list__view">
+                                    <div class="thumb">
+                                        <a class="first__img" asp-controller="Gallery" asp-action="Book" asp-route-id="@item.Id"><img src="@item.ImgUrl" alt="product images"></a>
+                                        <a class="second__img animation1" asp-controller="Gallery" asp-action="Book" asp-route-id="@item.Id"><img src="~/images/product/2.jpg" alt="product images"></a>
+                                    </div>
+                                    <div class="content">
+                                        <h2><a href="single-product.html">@item.Name</a></h2>
+                                        <ul class="rating d-flex">
+                                            <li class="on"><i class="fa fa-star-o"></i></li>
+                                            <li class="on"><i class="fa fa-star-o"></i></li>
+                                            <li class="on"><i class="fa fa-star-o"></i></li>
+                                            <li class="on"><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                        </ul>
+                                        <ul class="prize__box">
+                                            <li>$@item.Price</li>
+                                            <li class="old__prize">$@item.PriceOffer</li>
+                                        </ul>
+                                        <p>@item.Details</p>
+                                        <ul class="cart__action d-flex">
+                                            <li class="cart"><a href="cart.html">Add to cart</a></li>
+                                            <li class="wishlist"><a href="cart.html"></a></li>
+                                            <li class="compare"><a href="cart.html"></a></li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <!-- End Single Product -->
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Shop Page -->
+@section scripts{ 
+    <script type="text/javascript">
+
+        function FilterBook() {
+            var value = $("#amount").val();
+            window.location = "/Gallery?c=@(Model.currentCategory)&fb=" + value;
+        }
+
+        function SearchBook() {
+            var value = $("#src_id").val();
+            window.location = "/Gallery?c=@(Model.currentCategory)&src=" + value;
+        }
+
+    </script>
+}

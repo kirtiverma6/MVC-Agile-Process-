@@ -1,0 +1,61 @@
+
+.caption {
+    height: 130px;
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+.img-box {
+    width: auto;
+    height: 326px;
+    background-color: #808080;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.thumbnail .img-box img {
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+    height:auto;
+    width:auto;
+}
+.thumbnail .img-box .img-box-cart{
+    display:none;
+}
+.thumbnail:hover .img-box .img-box-cart {
+    display:block;
+    position: absolute;
+    top: 5px;
+    left: 25px;
+    background: green;
+    padding: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+}
