@@ -36,7 +36,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  targetDirectory: 'C:\kirti\Lab4'  # Update with your target directory
+  targetDirectory: 'C:\kirti\Lab4\bg1\_work\1\a'  # Update with your target directory
 
 jobs:
 - deployment: DeployApp
