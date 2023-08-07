@@ -4,16 +4,59 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- main  # Change this to the appropriate branch
+
+pr:
+- '*'
 
 pool:
-  vmImage: ubuntu-latest
+  name: LocalContainer  # Replace with the name of your self-hosted agent pool
+  vmImage: 'windows-latest'
+  demands:
+    - msbuild
+    - visualstudio
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  buildConfiguration: 'Release'
+  outputDirectory: '$(build.artifactstagingdirectory)/$(Build.DefinitionName)/BookStore-master/BookStore'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: BuildAndTest
+  steps:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '2.1.x'  # Change to the .NET Core 2.1 version
+
+  - script: cd BookStore-master/BookStore
+    displayName: '$(build.artifactstagingdirectory)'
+
+  - script: cd BookStore-master/BookStore
+    displayName: '$(Build.ArtifactStagingDirectory)/$(build.BuildId)'
+    
+  - script: |
+      cd BookStore-master/BookStore
+      dotnet restore
+    displayName: 'Restore dependencies'
+
+  - script: |
+      cd BookStore-master/BookStore
+      dotnet build
+    displayName: 'Build'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'BookStore-master/BookStore'
+      Contents: '**/*.dll'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive files'
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/$(build.BuildId).zip
+      replaceExistingArchive: true
+  - upload: $(Build.ArtifactStagingDirectory)/$(build.BuildId).zip
+    artifact: drop
