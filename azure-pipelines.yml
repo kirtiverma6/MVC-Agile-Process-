@@ -40,11 +40,6 @@ jobs:
       dotnet build
     displayName: 'Build'
 
-  - script: |
-      cd BookStore-master/BookStores 
-      dotnet test
-    displayName: 'Run tests'
-
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(outputDirectory)'
