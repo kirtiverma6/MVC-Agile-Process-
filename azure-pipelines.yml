@@ -29,13 +29,16 @@ jobs:
   - script: cd BookStore-master/BookStore
     displayName: 'move to working directory'
     
-  - script: dotnet restore
+  - script: cd BookStore-master/BookStore
+      dotnet restore
     displayName: 'Restore dependencies'
 
-  - script: dotnet build --configuration $(buildConfiguration) --output $(outputDirectory)
+  - script: cd BookStore-master/BookStore 
+      dotnet build --configuration $(buildConfiguration) --output $(outputDirectory)
     displayName: 'Build'
 
-  - script: dotnet test --configuration $(buildConfiguration) --collect "Code coverage"
+  - script: cd BookStore-master/BookStore 
+      dotnet test --configuration $(buildConfiguration) --collect "Code coverage"
     displayName: 'Run tests'
 
   - task: CopyFiles@2
