@@ -10,6 +10,7 @@ pr:
 
 pool:
   name: LocalContainer  # Replace with the name of your self-hosted agent pool
+  vmImage: 'windows-latest'
   demands:
     - msbuild
     - visualstudio
@@ -29,7 +30,8 @@ jobs:
   - script: cd BookStore-master/BookStore
     displayName: 'move to working directory'
     
-  - script: cd BookStore-master/BookStore
+  - script: |
+      cd BookStore-master/BookStore
       dotnet restore
     displayName: 'Restore dependencies'
 
