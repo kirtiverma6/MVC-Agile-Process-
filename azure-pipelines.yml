@@ -35,12 +35,14 @@ jobs:
       dotnet restore
     displayName: 'Restore dependencies'
 
-  - script: cd BookStore-master/BookStore 
-      dotnet build --configuration $(buildConfiguration) --output $(outputDirectory)
+  - script: |
+      cd BookStore-master/BookStore
+      dotnet build
     displayName: 'Build'
 
-  - script: cd BookStore-master/BookStore 
-      dotnet test --configuration $(buildConfiguration) --collect "Code coverage"
+  - script: |
+      cd BookStore-master/BookStores 
+      dotnet test
     displayName: 'Run tests'
 
   - task: CopyFiles@2
