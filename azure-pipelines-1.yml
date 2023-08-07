@@ -36,7 +36,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  targetDirectory: 'C:\kirti\Lab4\bg1\_work\1\a'  # Update with your target directory
+  targetDirectory: '$(build.artifactstagingdirectory)'  # Update with your target directory
 
 jobs:
 - deployment: DeployApp
@@ -47,6 +47,9 @@ jobs:
         steps:
         - download: current
           artifact: buildpipeline  # Replace with your artifact name from the build pipeline
+
+        - script: cd BookStore-master/BookStore
+          displayName: '$(build.artifactstagingdirectory)'
 
         - script: |
             # Replace with the appropriate command to copy artifacts to the target directory
