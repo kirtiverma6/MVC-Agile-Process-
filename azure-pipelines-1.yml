@@ -2,4 +2,53 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+# trigger: none  # This release pipeline doesn't need automatic triggers
 
+# stages:
+# - stage: CopyAndRun
+#   jobs:
+#   - deployment: CopyAndRunJob
+#     environment: 'VM Environment'  # Replace with the environment name
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - powershell: |
+#               $sourcePath = "\\VM-IP-Address\ShareName"  # Replace with the actual UNC path
+#               $destinationPath = "C:\path\to\local\directory"  # Replace with your local path
+
+#               Copy-Item -Path $sourcePath\*.dll -Destination $destinationPath
+#             displayName: 'Copy DLL Files to Local Directory'
+
+#           - script: |
+#               cd "C:\path\to\application\directory"
+#               YourApplication.exe  # Replace with the actual application executable name
+#             displayName: 'Run Application'
+
+trigger:
+- none  # Manual trigger
+
+pr:
+- none
+
+pool:
+  name: Default  # You can change this to the appropriate agent pool
+  vmImage: 'windows-latest'
+
+variables:
+  targetDirectory: 'C:\kirti\Lab4\bg1\_work\1\a'  # Update with your target directory
+
+jobs:
+- deployment: DeployApp
+  environment: 'Generic provider.LAPTOP-60LA0V8I'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: buildpipeline  # Replace with your artifact name from the build pipeline
+
+        - script: |
+            # Replace with the appropriate command to copy artifacts to the target directory
+            Copy-Item -Path $(Pipeline.Workspace)/current/$(artifactName)/* -Destination $(targetDirectory) -Recurse
+          displayName: 'Copy Artifacts to Target Directory'
