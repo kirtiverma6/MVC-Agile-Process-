@@ -41,9 +41,5 @@ jobs:
       Contents: '**/*.dll'
       TargetFolder: '$(build.artifactstagingdirectory)'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: 'drop'
 
 
