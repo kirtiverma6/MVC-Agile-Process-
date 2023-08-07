@@ -28,7 +28,7 @@ jobs:
       version: '2.1.x'  # Change to the .NET Core 2.1 version
 
   - script: cd BookStore-master/BookStore
-    displayName: 'move to working directory'
+    displayName: '$(build.artifactstagingdirectory)'
     
   - script: |
       cd BookStore-master/BookStore
