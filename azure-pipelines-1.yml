@@ -32,7 +32,7 @@ pr:
 - none
 
 pool:
-  name: Default  # You can change this to the appropriate agent pool
+  name: LocalContainer  # Replace with the name of your self-hosted agent pool
   vmImage: 'windows-latest'
 
 variables:
