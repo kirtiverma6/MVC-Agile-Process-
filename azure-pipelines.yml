@@ -9,7 +9,7 @@ pr:
 - '*'
 
 pool:
-  name: BA1  # Replace with the name of your self-hosted agent pool
+  name: LocalContainer  # Replace with the name of your self-hosted agent pool
   demands:
     - msbuild
     - visualstudio
