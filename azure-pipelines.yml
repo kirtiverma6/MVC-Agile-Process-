@@ -17,7 +17,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  outputDirectory: '$(build.artifactstagingdirectory)/BookStore-master/BookStore/$(Build.DefinitionName)'
+  outputDirectory: '$(build.artifactstagingdirectory)/$(Build.DefinitionName)/BookStore-master/BookStore'
 
 jobs:
 - job: BuildAndTest
