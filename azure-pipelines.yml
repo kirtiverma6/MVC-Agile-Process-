@@ -42,7 +42,7 @@ jobs:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: '$(outputDirectory)'
+      SourceFolder: 'BookStore-master/BookStore'
       Contents: '**/*.dll'
       TargetFolder: '$(build.artifactstagingdirectory)'
 
